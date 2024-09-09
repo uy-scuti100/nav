@@ -9,17 +9,19 @@ export default function Navigation({ navData }: { navData: INavItem[] }) {
 	const [navHistory, setNavHistory] = useState<INavItem[][]>([]);
 	const [isSlidingOut, setIsSlidingOut] = useState(false);
 	const [isSlidingIn, setIsSlidingIn] = useState(false);
+	const [parentTitleHistory, setParentTitleHistory] = useState<string[]>([]);
 
 	const handleNavClickFunction = (item: INavItem) => {
 		if (item.children) {
 			setIsSlidingOut(true);
 			setTimeout(() => {
 				setNavHistory([...navHistory, currentNav]);
+				setParentTitleHistory([...parentTitleHistory, item.title]); // here i'm tracking the parent title, cant think of a more optimixed way to do this
 				setCurrentNav(item.children || []);
 				setIsSlidingOut(false);
 				setIsSlidingIn(true);
-				setTimeout(() => setIsSlidingIn(false), 300);
-			}, 300);
+				setTimeout(() => setIsSlidingIn(false), 500);
+			}, 500);
 		} else if (item.url) {
 			window.location.href = item.url;
 		}
@@ -30,9 +32,11 @@ export default function Navigation({ navData }: { navData: INavItem[] }) {
 			setIsSlidingOut(true);
 			setTimeout(() => {
 				const previousNav = navHistory.pop();
+				const previousTitle = parentTitleHistory.pop();
 				if (previousNav) {
 					setCurrentNav(previousNav);
 					setNavHistory([...navHistory]);
+					setParentTitleHistory([...parentTitleHistory]);
 					setIsSlidingOut(false);
 					setIsSlidingIn(true);
 					setTimeout(() => setIsSlidingIn(false), 500);
@@ -41,15 +45,21 @@ export default function Navigation({ navData }: { navData: INavItem[] }) {
 		}
 	};
 
+	//  and here i am putting the parent title in a variable that changes when the histiory changes on the pop() method
+	const parentTitle =
+		parentTitleHistory.length > 0
+			? parentTitleHistory[parentTitleHistory.length - 1]
+			: null;
+
 	return (
 		<div className="relative bg-[#1d1f21] shadow-md rounded-lg p-6 overflow-hidden m-2">
-			{navHistory.length > 0 && (
+			{parentTitle && (
 				<button
 					onClick={onBackHistoryBtnFunction}
-					className="flex items-center text-[#4f46e5] hover:text-[#281fda]  mb-4"
+					className="flex items-center text-[#4f46e5] hover:text-[#6b64e8] mb-4"
 				>
 					<FaChevronLeft className="h-5 w-5 mr-2" />
-					<span className="font-medium">Back</span>
+					<span className="font-medium">{parentTitle}</span>
 				</button>
 			)}
 
