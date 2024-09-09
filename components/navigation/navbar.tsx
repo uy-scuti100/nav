@@ -20,8 +20,8 @@ export default function Navigation({ navData }: { navData: INavItem[] }) {
 				setCurrentNav(item.children || []);
 				setIsSlidingOut(false);
 				setIsSlidingIn(true);
-				setTimeout(() => setIsSlidingIn(false), 500);
-			}, 500);
+				setTimeout(() => setIsSlidingIn(false), 300);
+			}, 300);
 		} else if (item.url) {
 			window.location.href = item.url;
 		}
@@ -32,11 +32,11 @@ export default function Navigation({ navData }: { navData: INavItem[] }) {
 			setIsSlidingOut(true);
 			setTimeout(() => {
 				const previousNav = navHistory.pop();
-				const previousTitle = parentTitleHistory.pop();
+				parentTitleHistory.pop();
 				if (previousNav) {
 					setCurrentNav(previousNav);
 					setNavHistory([...navHistory]);
-					setParentTitleHistory([...parentTitleHistory]);
+					setParentTitleHistory([...parentTitleHistory]); // and here i update the parent title history as the pop() method removes the last element
 					setIsSlidingOut(false);
 					setIsSlidingIn(true);
 					setTimeout(() => setIsSlidingIn(false), 500);
@@ -56,7 +56,7 @@ export default function Navigation({ navData }: { navData: INavItem[] }) {
 			{parentTitle && (
 				<button
 					onClick={onBackHistoryBtnFunction}
-					className="flex items-center text-[#4f46e5] hover:text-[#6b64e8] mb-4"
+					className="flex items-center text-[#4f46e5] duration-300 transition-colors  hover:text-[#6b64e8] mb-4"
 				>
 					<FaChevronLeft className="h-5 w-5 mr-2" />
 					<span className="font-medium">{parentTitle}</span>
