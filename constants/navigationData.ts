@@ -172,7 +172,7 @@ export const navData: INavItem[] = [
 		],
 	},
 	{
-		id: "6=blog",
+		id: "blog",
 		title: "Blog",
 		url: "/blog",
 	},

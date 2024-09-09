@@ -5,7 +5,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { HiLink } from "react-icons/hi2";
 
 export default function Navigation({ navData }: { navData: INavItem[] }) {
-	const [currentNav, setCurrentNav] = useState<INavItem[]>(navData);
+	const [currentNav, setCurrentNav] = useState<INavItem[]>(navData || []);
 	const [navHistory, setNavHistory] = useState<INavItem[][]>([]);
 	const [isSlidingOut, setIsSlidingOut] = useState(false);
 	const [isSlidingIn, setIsSlidingIn] = useState(false);
