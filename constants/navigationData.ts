@@ -209,22 +209,3 @@ export const navData: INavItem[] = [
 		],
 	},
 ];
-
-export function addNewChildToNav(
-	navItems: INavItem[],
-	parentId: string,
-	newChild: INavItem
-): INavItem[] {
-	return navItems.map((item) => {
-		if (item.id === parentId) {
-			return { ...item, children: [...(item.children || []), newChild] };
-		}
-		if (item.children) {
-			return {
-				...item,
-				children: addNewChildToNav(item.children, parentId, newChild),
-			};
-		}
-		return item;
-	});
-}
